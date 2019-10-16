@@ -1,0 +1,14 @@
+<div class="container">
+	<h4>{{pageTitle}}</h4>
+	<div class="card-deck">
+		<div class="card" *ngFor='let adventure of adventures'>
+			<img class="card-img-top" [src]='adventure.imageUrl' [alt]='adventure.adventureTitle'
+				[title]='adventure.adventureTitle'>
+			<div class="card-body">
+				<h5 class="card-title">{{adventure.adventureTitle}}</h5>
+				<p class="card-text">{{adventure.description}}</p>
+				<p class="card-text"><small class="text-muted">{{adventure.date}}</small></p>
+			</div>
+		</div>
+	</div>
+</div>
