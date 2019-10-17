@@ -1,47 +1,37 @@
 import { Injectable } from '@angular/core';
 import { IAdventure } from './adventure';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({
-	providedIn:'root'
+	providedIn: 'root'
 })
 export class AdventureService {
-	getAdventures(): IAdventure[] {
-		return [
-			{
-				"adventureId": 1,
-				"adventureTitle": "Sokolov kamen",
-				"description": "Sokolov kamen je drugi po visini vrh na Suvoj planini (1523m)",
-				"imageUrl": "assets/images/nala/adv1.jpg",
-				"date": "6.10.2019."
-			},
-			{
-				"adventureId": 2,
-				"adventureTitle": "Prolom banja",
-				"description": "Prolom Banja se nalazi u Južnoj Srbiji, na padinama planine Radan. Poznata je po svojoj lekovitoj Prolom vodi.",
-				"imageUrl": "assets/images/nala/adv2.jpg",
-				"date": "29.06.2019."
-			},
-			{
-				"adventureId": 3,
-				"adventureTitle": "Kopaonik",
-				"description": "Kopaonik je najveći planinski masiv u Srbiji koji se pruža od severozapada ka jugoistoku dužinom od oko 75 km, dosežući u srednjem delu širinu od oko 40 km.",
-				"imageUrl": "assets/images/nala/adv3.jpg",
-				"date": "01.02.2019."
-			},
-			{
-				"adventureId": 4,
-				"adventureTitle": "Maglič",
-				"description": "Maglič je srednjovekovna utvrda u ibarskoj klisuri, 20km južno od Kraljeva. Smešten je na vrhu brda. Maglič čini 8 kula povezanih bedemima",
-				"imageUrl": "assets/images/nala/adv4.jpg",
-				"date": "05.05.2019."
-			},
-			{
-				"adventureId": 5,
-				"adventureTitle": "Đavolja varoš",
-				"description": "Đavolja Varoš je vrlo atraktivan prirodni fenomen koji se nalazi na jugu Srbije, oko 90 km jugozapadno od Niša. Čine je 202 kamene figure.",
-				"imageUrl": "assets/images/nala/adv5.jpg",
-				"date": "21.04.2018."
-			}
-		]
+	private adventureUrl = 'http://localhost:3000/url';
+
+	constructor(private http: HttpClient) { }
+
+	getAdventures(): Observable<IAdventure[]> {
+		return this.http.get<IAdventure[]>(this.adventureUrl).pipe(
+			tap(data => console.log('All: ' + JSON.stringify(data))),
+			catchError(this.handleError)
+		);
+	}
+
+	private handleError(err: HttpErrorResponse) {
+		// in a real world app, we may send the server to some remote logging infrastructure
+		// instead of just logging it to the console
+		let errorMessage = '';
+		if (err.error instanceof ErrorEvent) {
+			// A client-side or network error occurred. Handle it accordingly.
+			errorMessage = `An error occurred: ${err.error.message}`;
+		} else {
+			// The backend returned an unsuccessful response code.
+			// The response body may contain clues as to what went wrong,
+			errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+		}
+		console.error(errorMessage);
+		return throwError(errorMessage);
 	}
 }
