@@ -1,6 +1,11 @@
-# Nala2
+# Nala's Adventures App (Angular, Typescript application)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.9.
+
+## Screenshots
+Full page screenshot
+
+![Display](https://i.ibb.co/4NPYTV1/download-2.png)
 
 ## Development server
 
